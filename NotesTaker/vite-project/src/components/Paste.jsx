@@ -1,4 +1,4 @@
-import { Calendar, Copy, Eye, PencilLine, Trash2 } from "lucide-react";
+import { Calendar, Copy, Eye, PencilLine, Trash2, Share } from "lucide-react";
 import toast from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react"; // Import useState
@@ -18,6 +18,21 @@ const Paste = () => {
   const filteredPastes = pastes.filter((paste) =>
     paste.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleShare = (paste) => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: paste.title,
+          text: paste.content,
+          url: window.location.origin + `/pastes/${paste._id}`, // Share URL
+        })
+        .then(() => toast.success("Shared successfully!"))
+        .catch((error) => toast.error("Share failed: " + error.message));
+    } else {
+      toast.error("Sharing is not supported in this browser.");
+    }
+  };
 
   return (
     <div className="w-full h-full py-10 max-w-[1200px] mx-auto px-5 lg:px-0">
@@ -58,7 +73,6 @@ const Paste = () => {
                     <div className="flex gap-2 flex-wrap sm:flex-nowrap">
                       <button
                         className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-blue-500"
-                        // onClick={() => toast.error("Not working")}
                       >
                         <a href={`/?pasteId=${paste?._id}`}>
                           <PencilLine
@@ -76,7 +90,6 @@ const Paste = () => {
                           size={20}
                         />
                       </button>
-
                       <button className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-orange-500">
                         <a href={`/pastes/${paste?._id}`} target="_blank">
                           <Eye
@@ -94,6 +107,15 @@ const Paste = () => {
                       >
                         <Copy
                           className="text-black group-hover:text-green-500"
+                          size={20}
+                        />
+                      </button>
+                      <button
+                        className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-purple-500"
+                        onClick={() => handleShare(paste)}
+                      >
+                        <Share
+                          className="text-black group-hover:text-purple-500"
                           size={20}
                         />
                       </button>
