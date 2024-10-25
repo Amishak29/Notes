@@ -4,6 +4,10 @@ import Home from "./components/Home";
 import Paste from "./components/Paste";
 import ViewPaste from "./components/ViewPaste";
 import Navbar from "./components/Navbar";
+import './App.css';
+import PastesList from "./components/PastesList";
+import PasteView from "./components/PasteView";
+
 
 const router = createBrowserRouter(
   [
