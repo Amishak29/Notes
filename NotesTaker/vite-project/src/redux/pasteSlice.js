@@ -28,6 +28,16 @@ const pasteSlice = createSlice({
       // show toast
       toast.success("Paste added")
     },
+    updateHighlights: (state, action) => {
+      const { id, highlights } = action.payload;
+      const index = state.pastes.findIndex((paste) => paste._id === id);
+      
+      if (index >= 0) {
+        state.pastes[index].highlights = highlights;
+        localStorage.setItem("pastes", JSON.stringify(state.pastes));
+        toast.success("Highlights updated");
+      }
+    },
 
     updatePastes: (state, action) => {
       const paste = action.payload
@@ -65,6 +75,6 @@ const pasteSlice = createSlice({
   },
 })
 
-export const { addToPastes, removeFromPastes, updatePastes } = pasteSlice.actions
+export const { addToPastes, removeFromPastes, updatePastes, updateHighlights } = pasteSlice.actions
 
 export default pasteSlice.reducer
